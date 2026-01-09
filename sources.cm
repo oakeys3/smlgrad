@@ -3,4 +3,5 @@ Group is
   $/smlnj-lib.cm
 
   src/scalar.sml
+  src/nn.sml
   src/main.sml

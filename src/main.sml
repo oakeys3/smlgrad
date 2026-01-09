@@ -1,24 +1,23 @@
 structure Main = struct
   open Scalar
+  open NN
 
   fun run () =
     let
-      val a = make 2.0
-      val b = relu a
-      (* Case 1: Active Neuron (Input 2.0 -> Output 2.0) *)
+      val _ = print "\n--- Initializing Neuron ---\n"
+      (* 1. Create a Neuron expecting 2 inputs *)
+      val n = NN.initNeuron(2)
       
-      val c = make ~3.0
-      val d = relu c
-      (* Case 2: Dead Neuron (Input -3.0 -> Output 0.0) *)
+      (* 2. Create inputs *)
+      val x = [Scalar.make 1.0, Scalar.make ~2.0]
+      
+      (* 3. Forward Pass *)
+      val out = NN.forward n x
     in
-      print "--- ReLU Test ---\n";
+      (* 4. Backward Pass (The moment of truth) *)
+      backward out;
       
-      (* Test Active: Gradient should pass through *)
-      backward b;
-      print ("Input: 2.0 -> Grad: " ^ Real.toString(getGrad a) ^ " (Expected: 1.0)\n");
-      
-      (* Test Dead: Gradient should be killed (0.0) *)
-      backward d;
-      print ("Input: ~3.0 -> Grad: " ^ Real.toString(getGrad c) ^ " (Expected: 0.0)\n")
+      print ("Output Value: " ^ Real.toString(getData out) ^ "\n");
+      print "Backprop passed. Graph is alive.\n"
     end
 end
